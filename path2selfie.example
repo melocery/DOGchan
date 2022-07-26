@@ -1,0 +1,6 @@
+path=/path/to/dogchan/img/
+files=$(ls $path)
+for file in files
+do
+    echo $path$file >> /path/to/dogchan/path2selfie.txt
+done
