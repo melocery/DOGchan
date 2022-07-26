@@ -42,6 +42,8 @@ mstdn-ebooks: [reply.py](https://github.com/Lynnesbian/mstdn-ebooks/blob/master/
 
 ## Usage
 ### 自动发嘟
+将所有的图片都存在 `dogchan/imgexample` 中，可更改目录名为 `img` 并删除示例目录下所有文件。编辑 `path2selfie.example` ，将其中的路径更改为存放照片的目录的绝对路径，更改脚本名为 `path2selfie.sh`。通过 `bash path2selfie.sh` 获取文件夹下所有文件的文件名和绝对路径存储在 `path2selfie.txt` (需与 selfie.py 在同一目录下)，`selfie.py` 运行时会读取该文件并随机选择一行 ，即随机选择一个图片文件发嘟。  
+
 使用命令：  
 
 ```
@@ -56,6 +58,8 @@ mstdn-ebooks: [reply.py](https://github.com/Lynnesbian/mstdn-ebooks/blob/master/
 ```
 
 即可在每周三上午九点发送一条带有图片的嘟嘟。  
+
+
 
 ### 自动回复
 手动运行脚本：  
