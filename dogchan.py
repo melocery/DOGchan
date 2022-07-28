@@ -9,13 +9,6 @@ mastodon = Mastodon(
     api_base_url = 'https://musain.cafe',
 )
 
-
-# mastodon = Mastodon(
-#     access_token = 'BhE0OJvLhOkNwwKB-sXLG-798VfwSahauG9SnF_XgtQ',
-#     api_base_url = 'https://mstdn.social',
-# )
-
-
 def process_mention(mastodon, notification):
     acct = "@" + notification['account']['acct'] #get the account's @
     print("mention detected")
@@ -40,6 +33,7 @@ def process_mention(mastodon, notification):
     pattern3 = re.compile(r'玩飞盘|玩飛盤')
     pattern4 = re.compile(r'选酒|選酒')
     pattern5 = re.compile(r'谢谢|謝謝')
+    pattern6 = re.complie(r'帅|可爱|好看')
     if pattern1.search(mention_text):
         print("Woof!")
         content = acct + ' ' + Woof.WangWang()
@@ -75,6 +69,14 @@ def process_mention(mastodon, notification):
     elif pattern5.search(mention_text):
         print("thanks!")
         content = acct + ' ' + '汪汪爱你！'
+        mastodon.status_post(
+            status = content,
+            in_reply_to_id = post['id'],
+            visibility=visibility
+        )
+    elif pattern6.search(mention_text):
+        print("Kuakua!")
+        content = acct + ' ' + '你是在夸汪汪吗？谢谢，汪汪爱你！'
         mastodon.status_post(
             status = content,
             in_reply_to_id = post['id'],
