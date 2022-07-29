@@ -91,8 +91,8 @@ def process_mention(mastodon, notification):
             visibility=visibility
         )
 
-noti = mastodon.notifications()
-process_mention(mastodon, noti[0])
+# noti = mastodon.notifications()
+# process_mention(mastodon, noti[0])
 
 class ReplyListener(StreamListener):
     def on_notification(self, notification): #listen for notifications
