@@ -54,7 +54,7 @@ def RuaRua():
                 '汪汪从你身边快乐跑过，没有给你摸摸的机会！':5,
     }
     value_list = []
-    for key, value in lessons_list.items():
+    for key, value in Rua_list.items():
         value_list += value*[key]
     Rua = random.choice(value_list)
     return Rua

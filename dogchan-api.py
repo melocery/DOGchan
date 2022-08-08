@@ -14,13 +14,26 @@ def process_mention(mastodon, notification):
     print("mention detected")
     post = notification['status']
     mention_text = Woof.extract_toot(post['content'])
+    print(mention_text)
     visibility = post['visibility']
+    # mention_text = extract_toot(nfcts[0]['status']['content'])
+    # pattern1 = re.compile(r'照片|自拍')
+    # if pattern1.search(mention_text):
+    #     media_file = random.choice(open("path2selfie.txt").read().splitlines())
+    #     selfie =  mastodon.media_post(media_file)
+    #     content = acct + ' '
+    #     mastodon.status_post(
+    #         status = content, # the toot you'd like to send
+    #         in_reply_to_id = post['id'], # the post you're replying to
+    #         media_ids = selfie,
+    #         visibility=visibility 
+    #     )
     pattern1 = re.compile(r'学狗叫|學狗叫')
     pattern2 = re.compile(r'ruarua|摸摸|揉揉')
     pattern3 = re.compile(r'玩飞盘|玩飛盤')
     pattern4 = re.compile(r'选酒|選酒')
     pattern5 = re.compile(r'谢谢|謝謝')
-    pattern6 = re.compile(r'帅|可爱|好看')
+    pattern6 = re.complie(r'帅|可爱|好看')
     if pattern1.search(mention_text):
         print("Woof!")
         content = acct + ' ' + Woof.WangWang()
@@ -35,7 +48,7 @@ def process_mention(mastodon, notification):
         mastodon.status_post(
             status = content,
             in_reply_to_id = post['id'],
-           visibility=visibility
+            visibility=visibility
         )
     elif pattern3.search(mention_text):
         print("PlayFP!")
@@ -78,34 +91,12 @@ def process_mention(mastodon, notification):
             visibility=visibility
         )
 
-def ifreply(mastodon,notification):
-    # check if we've already been participating in this thread
-    post_id = notification['status']['id']
-    try:
-        context = mastodon.status_context(post_id)
-    except:
-        print("failed to fetch thread context")
-        return False
-    me = mastodon.account_verify_credentials()['id']
-    posts = 0
-    for post in context['descendants']:
-        if post['account']['id'] == me and post['in_reply_to_id'] == post_id:
-            return False
-    return True
+class ReplyListener(StreamListener):
+    def on_notification(self, notification): #listen for notifications
+        if notification['type'] == 'mention': #if we're mentioned:
+            process_mention(mastodon, notification)
 
-def autoreply(mastodon, since_id):
-    notifications = mastodon.notifications(since_id)
-    for noti in notifications:
-        if noti['type'] != 'mention':
-            continue
-        if ifreply(mastodon, noti):
-            process_mention(mastodon, noti)
-        else:
-            new_since_id = str(noti['id'])
-            fo.write(new_since_id)
-            return
+# create a new instance of our ReplyListener class
+rl = ReplyListener()
+mastodon.stream_user(rl) #go!
 
-fo = open("sinceid.txt", "w+")
-since_id = fo.read()
-autoreply(mastodon, since_id)
-fo.close()
