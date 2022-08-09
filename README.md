@@ -59,9 +59,13 @@ mstdn-ebooks: [reply.py](https://github.com/Lynnesbian/mstdn-ebooks/blob/master/
 
 即可在每周三上午九点发送一条带有图片的嘟嘟。  
 
-
-
 ### 自动回复
+先试运行脚本：  
+```
+  python dogchan-api.py
+```
+如果运行一直没有出现问题，可将 `dogchan-api.py` 改名为 `dogchan.py` 替换现有的 `dogchan.py`。  
+
 手动运行脚本：  
 
 ```
@@ -70,3 +74,7 @@ mstdn-ebooks: [reply.py](https://github.com/Lynnesbian/mstdn-ebooks/blob/master/
 
 即可启动关键词触发的自动回复，Ctrl C、或关闭 Terminal、服务器都会停止运行。  
 可使用 systemd 自动运行脚本。编辑 `systemd-example.service`，并存放在合适的文件夹即可。  
+
+如果试运行脚本报错 `mastodon.Mastodon.MastodonNetworkError: Server ceased communication.`，详见：[#243](https://github.com/halcy/Mastodon.py/issues/243)，则有两种解决方法：  
+- 利用 loop 重建 streaming：每次遇到报错就重建 streaming，但这种方法可能丢失部分 notifications。  
+- 直接利用 `dogchan.py`，而舍弃 `dogchan-api.py`。由于 `dogchan.py` 是通过每十分钟执行一次脚本读取的 notifications 并进行操作以实现自动回复，因此需要设置定时任务，如每十分钟执行一次脚本 (选择合适的时间间隔即可)。
