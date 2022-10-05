@@ -31,8 +31,8 @@ mstdn-ebooks: [reply.py](https://github.com/Lynnesbian/mstdn-ebooks/blob/master/
 在服务器合适的位置进行如下操作：  
 
 ```bash
-  git clone https://github.com/melocery/CATsama.git
-  cd CATsama
+  git clone https://github.com/melocery/DOGchan.git
+  cd DOGchan
   conda create -n mastbot python=3.8
   conda activate mastbot
   pip3 install requests beautifulsoup4 Mastodon.py
