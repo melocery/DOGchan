@@ -72,7 +72,7 @@ def process_mention(mastodon, notification):
         )
     else:
         print("Wang don't understand!")
-        content = acct + ' ' + '汪汪不明白你在说什么，但决定让你摸摸！'
+        content = acct + ' ' + '汪汪汪！'
         mastodon.status_post(
             status = content, 
             in_reply_to_id = post['id'], 
@@ -95,18 +95,25 @@ def ifreply(mastodon,notification):
     return True
 
 def autoreply(mastodon, since_id):
-    notifications = mastodon.notifications(since_id)
+    notifications = mastodon.notifications(since_id = since_id)
+    if len(notifications) == 0:
+        fo.write(since_id)
+        return
+    new_since_id = notifications[0]['id']
+    fo.write(new_since_id)
     for noti in notifications:
         if noti['type'] != 'mention':
             continue
         if ifreply(mastodon, noti):
             process_mention(mastodon, noti)
         else:
-            new_since_id = str(noti['id'])
-            fo.write(new_since_id)
             return
 
+fo = open("sinceid.txt", "r")
+since_id = fo.readline()
+since_id = int(since_id)
+fo.close()
 fo = open("sinceid.txt", "w+")
-since_id = fo.read()
-autoreply(mastodon, since_id)
+print(since_id)
+autotoot(mastodon, since_id)
 fo.close()
